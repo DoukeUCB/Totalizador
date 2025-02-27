@@ -1,15 +1,20 @@
-import sumar from "./sumador";
+import { calculateNetPrice } from "./totalizador.js";
 
-const first = document.querySelector("#primer-numero");
-const second = document.querySelector("#segundo-numero");
+const quantityInput = document.querySelector("#label-quantity");
+const priceInput = document.querySelector("#label-price");  
 const form = document.querySelector("#form");
-const div = document.querySelector("#resultado-div");
+const resultDiv = document.querySelector("#result-div");
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
 
-  const firstNumber = Number.parseInt(first.value);
-  const secondNumber = Number.parseInt(second.value);
+  const quantity = Number.parseInt(quantityInput.value);
+  const price = Number.parseInt(priceInput.value);
 
-  div.innerHTML = "<p>" + sumar(firstNumber, secondNumber) + "</p>";
+  try {
+    const result = calculateNetPrice(quantity, price);
+    resultDiv.innerHTML = `<p>Precio Neto: ${result}</p>`;
+  } catch (error) {
+    resultDiv.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+  }
 });
