@@ -44,4 +44,7 @@ describe("Calcular el impuesto", () => {
   it("Debería retornar el impuesto correcto para el estado UT", () => {
     expect(calculateTax(1000, "UT")).toBe(66.5); 
   });
+  it("Debería retornar el impuesto correcto para el estado NV", () => {
+    expect(calculateTax(1000, "NV")).toBe(80);
+  });
 });
