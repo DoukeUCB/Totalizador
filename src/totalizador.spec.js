@@ -9,5 +9,9 @@ describe("Calcular el precio neto", () => {
     expect(() => calculateNetPrice(-3, 5)).toThrow(Error);
     expect(() => calculateNetPrice(3, NaN)).toThrow(Error);
   });
+  it("Debería lanzar un error si el precio es menor o igual a 0", () => {
+    expect(() => calculateNetPrice(3, -5)).toThrow("El precio debe ser mayor a 0.");
+    expect(() => calculateNetPrice(3, 0)).toThrow("El precio debe ser mayor a 0.");
+  });
 });
 
