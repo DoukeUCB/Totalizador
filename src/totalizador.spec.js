@@ -1,4 +1,4 @@
-import { calculateNetPrice, calculateDiscount} from "./totalizador.js";
+import { calculateNetPrice, calculateDiscount,calculateTax} from "./totalizador.js";
 
 describe("Calcular el precio neto", () => {
   it("Deberia retornar la cantidad por el precio", () => {
@@ -39,4 +39,9 @@ describe("Calcular el descuento", () => {
     expect(calculateDiscount(500)).toBe(0);
   });
 
+});
+describe("Calcular el impuesto", () => {
+  it("Debería retornar el impuesto correcto para el estado UT", () => {
+    expect(calculateTax(1000, "UT")).toBe(66.5); 
+  });
 });

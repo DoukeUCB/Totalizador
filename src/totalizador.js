@@ -43,3 +43,11 @@ export function calculateDiscount(totalPrice) {
     }
     
 }
+export function calculateTax(totalPrice, stateCode) {
+    const taxRates = {
+        "UT": 0.0665
+    };
+
+    const taxRate = taxRates[stateCode] || 0;
+    return totalPrice * taxRate;
+}
