@@ -47,7 +47,8 @@ export function calculateTax(totalPrice, stateCode) {
     const taxRates = {
         "UT": 0.0665,
         "NV": 0.08,
-        "TX": 0.0625
+        "TX": 0.0625,
+        "AL": 0.04
     };
 
     const taxRate = taxRates[stateCode] || 0;
