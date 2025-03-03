@@ -56,4 +56,7 @@ describe("Calcular el impuesto", () => {
   it("Debería retornar el impuesto correcto para el estado CA", () => {
     expect(calculateTax(1000, "CA")).toBe(82.5);
   });
+  it("Debería retornar 0 si el estado no está en la lista", () => {
+    expect(calculateTax(1000, "XX")).toBe(0);
+  });
 });
