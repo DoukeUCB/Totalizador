@@ -29,3 +29,8 @@ function quantityValidator(quantity) {
     }
     return quantity;
 }
+export function calculateDiscount(totalPrice) {
+    if (totalPrice >= 1000 && totalPrice < 3000) {
+        return totalPrice * 0.03;
+    }
+}

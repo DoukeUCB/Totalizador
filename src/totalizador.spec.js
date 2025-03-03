@@ -1,4 +1,4 @@
-import { calculateNetPrice } from "./totalizador.js";
+import { calculateNetPrice, calculateDiscount} from "./totalizador.js";
 
 describe("Calcular el precio neto", () => {
   it("Deberia retornar la cantidad por el precio", () => {
@@ -22,4 +22,9 @@ describe("Calcular el precio neto", () => {
     expect(() => calculateNetPrice(3, null)).toThrow("El precio no puede estar vacío.");
   });
 });
+describe("Calcular el descuento", () => {
+  it("Debería retornar el descuento correcto para un precio total de 1000", () => {
+    expect(calculateDiscount(1000)).toBe(30); 
+  });
 
+});
