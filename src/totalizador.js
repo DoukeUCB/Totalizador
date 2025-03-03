@@ -34,5 +34,8 @@ export function calculateDiscount(totalPrice) {
         return totalPrice * 0.03;
     } else if (totalPrice >= 3000 && totalPrice < 7000) {
         return totalPrice * 0.05;
+    } else if (totalPrice >= 7000 && totalPrice < 10000) {
+        return totalPrice * 0.07;
     }
+    
 }
