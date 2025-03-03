@@ -17,5 +17,9 @@ describe("Calcular el precio neto", () => {
     expect(() => calculateNetPrice("abc", 5)).toThrow("La cantidad debe ser un número válido.");
     expect(() => calculateNetPrice(null, 5)).toThrow("La cantidad no puede estar vacía.");
   });
+  it("Debería lanzar un error si el precio no es un número", () => {
+    expect(() => calculateNetPrice(3, "abc")).toThrow("El precio debe ser un número válido.");
+    expect(() => calculateNetPrice(3, null)).toThrow("El precio no puede estar vacío.");
+  });
 });
 
