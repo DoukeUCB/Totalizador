@@ -32,5 +32,8 @@ describe("Calcular el descuento", () => {
   it("Debería retornar el descuento correcto para un precio total de 7000", () => {
     expect(calculateDiscount(7000)).toBeCloseTo(490, 2); 
   });
+  it("Debería retornar el descuento correcto para un precio total de 10000", () => {
+    expect(calculateDiscount(10000)).toBeCloseTo(1000); 
+  });
 
 });
