@@ -55,3 +55,8 @@ export function calculateTax(totalPrice, stateCode) {
     const taxRate = taxRates[stateCode] || 0;
     return totalPrice * taxRate;
 }
+export function calculateTotalPrice(totalPrice, stateCode) {
+    const discount = calculateDiscount(totalPrice);
+    const tax = calculateTax(totalPrice - discount, stateCode);
+    return parseFloat((totalPrice - discount + tax).toFixed(2)); 
+}
