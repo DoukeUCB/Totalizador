@@ -6,12 +6,24 @@
   <body>
     <h1>Calcula tus impuestos!</h1>
     <form id="form">
-      <label for="label-quantity">Cantidad:</label>
+      <label for="label-quantity">Cantidad de ítem:</label>
       <input type="number" id="label-quantity" />
-      <label for="label-price">Precio:</label>
+
+      <label for="label-price">Precio por ítem:</label>
       <input type="number" id="label-price" />
-      <input type="submit" value="Calcular" id="calculate-button" />
+
+      <label for="label-state">Código de estado:</label>
+      <select id="label-state">
+        <option value="UT">UT</option>
+        <option value="NV">NV</option>
+        <option value="TX">TX</option>
+        <option value="AL">AL</option>
+        <option value="CA">CA</option>
+      </select>
+
+      <input type="submit" value="Totalizar" id="calculate-button" />
     </form>
+
     <div id="result-div"></div>
 
     <script type="module" src="./src/presenter.js"></script>
