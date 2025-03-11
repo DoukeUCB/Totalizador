@@ -24,7 +24,38 @@
       <input type="submit" value="Totalizar" id="calculate-button" />
     </form>
 
-    <div id="result-div"></div>
+    <div id="result-div">
+      <table>
+        <thead>
+          <tr>
+            <td><b>Cantidad de ítem:</b></td>
+            <td><b id="result-quantity"></b></td>
+          </tr>
+          <tr>
+            <td><b>Precio por ítem:</b></td>
+            <td><b id="result-price"></b></td>
+          </tr>
+          <tr>
+            <td><b>Código de estado:</b></td>
+            <td><b id="result-state"></b></td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="3">Precio neto: $<span id="result-net-price"></span></td>
+          </tr>
+          <tr>
+            <td colspan="3">Descuento: $<span id="result-discount"></span></td>
+          </tr>
+          <tr>
+            <td colspan="3">Impuesto: $<span id="result-tax"></span></td>
+          </tr>
+          <tr>
+            <td colspan="3">Precio total: $<span id="result-total-price"></span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
     <script type="module" src="./src/presenter.js"></script>
   </body>
