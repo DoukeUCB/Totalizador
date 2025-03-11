@@ -30,6 +30,19 @@ function quantityValidator(quantity) {
     return quantity;
 }
 
+function weightValidator(weight) {
+    if (weight === null || weight === undefined || weight === "") {
+        throw new Error("El peso no puede estar vacío.");
+    }
+    if (isNaN(weight) || Number.isNaN(Number(weight))) {
+        throw new Error("El peso debe ser un número válido.");
+    }
+    if (weight <= 0) {
+        throw new Error("El peso debe ser mayor a 0.");
+    }
+    return weight;
+}
+
 export function calculateDiscount(totalPrice) {
     if (totalPrice >= 1000 && totalPrice < 3000) {
         return totalPrice * 0.03;
@@ -88,6 +101,7 @@ export function calculateAdditionalDiscount(totalPrice, category) {
 }
 
 export function calculateShippingCost(weight) {
+    weightValidator(weight);
     if (weight <= 10) {
         return 0;
     } else if (weight <= 20) {

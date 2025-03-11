@@ -35,13 +35,25 @@ const handleFormSubmit = (event) => {
     const shippingDiscount = calculateShippingDiscount(shippingCost, clientType);
     const totalPrice = calculateTotalPrice(netPrice, state, category, weight, quantity, clientType);
 
-    document.querySelector("#result-quantity").textContent = quantity;
-    document.querySelector("#result-price").textContent = price.toFixed(2);
-    document.querySelector("#result-state").textContent = state;
-    document.querySelector("#result-net-price").textContent = `${quantity} * $${price.toFixed(2)}: $${netPrice.toFixed(2)}`;
-    document.querySelector("#result-discount").textContent = `${(totalDiscount / netPrice * 100).toFixed(2)}%: $${totalDiscount.toFixed(2)}`;
-    document.querySelector("#result-tax").textContent = `${((tax + additionalTax) / (netPrice - totalDiscount - fixedDiscount) * 100).toFixed(2)}%: $${(tax + additionalTax).toFixed(2)}`;
-    document.querySelector("#result-total-price").textContent = `${totalPrice.toFixed(2)} (incluye costo de envío: $${(shippingCost - shippingDiscount).toFixed(2)}, descuento fijo: $${fixedDiscount.toFixed(2)})`;
+    const resultQuantity = document.querySelector("#result-quantity");
+    const resultPrice = document.querySelector("#result-price");
+    const resultState = document.querySelector("#result-state");
+    const resultNetPrice = document.querySelector("#result-net-price");
+    const resultDiscount = document.querySelector("#result-discount");
+    const resultTax = document.querySelector("#result-tax");
+    const resultTotalPrice = document.querySelector("#result-total-price");
+
+    if (!resultQuantity || !resultPrice || !resultState || !resultNetPrice || !resultDiscount || !resultTax || !resultTotalPrice) {
+      throw new Error("No se pudieron encontrar todos los elementos de resultado en el DOM.");
+    }
+
+    resultQuantity.textContent = quantity;
+    resultPrice.textContent = price.toFixed(2);
+    resultState.textContent = state;
+    resultNetPrice.textContent = `${quantity} * $${price.toFixed(2)}: $${netPrice.toFixed(2)}`;
+    resultDiscount.textContent = `${(totalDiscount / netPrice * 100).toFixed(2)}%: $${totalDiscount.toFixed(2)}`;
+    resultTax.textContent = `${((tax + additionalTax) / (netPrice - totalDiscount - fixedDiscount) * 100).toFixed(2)}%: $${(tax + additionalTax).toFixed(2)}`;
+    resultTotalPrice.textContent = `${totalPrice.toFixed(2)} (incluye costo de envío: $${(shippingCost - shippingDiscount).toFixed(2)}, descuento fijo: $${fixedDiscount.toFixed(2)})`;
   } catch (error) {
     resultDiv.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
   }
