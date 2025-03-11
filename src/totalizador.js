@@ -29,6 +29,7 @@ function quantityValidator(quantity) {
     }
     return quantity;
 }
+
 export function calculateDiscount(totalPrice) {
     if (totalPrice >= 1000 && totalPrice < 3000) {
         return totalPrice * 0.03;
@@ -38,11 +39,11 @@ export function calculateDiscount(totalPrice) {
         return totalPrice * 0.07;
     } else if (totalPrice >= 10000 && totalPrice < 30000) {
         return totalPrice * 0.10;
-    }else {
+    } else {
         return 0;
     }
-    
 }
+
 export function calculateTax(totalPrice, stateCode) {
     const taxRates = {
         "UT": 0.0665,
@@ -55,6 +56,7 @@ export function calculateTax(totalPrice, stateCode) {
     const taxRate = taxRates[stateCode] || 0;
     return totalPrice * taxRate;
 }
+
 export function calculateAdditionalTax(totalPrice, category) {
     const additionalTaxRates = {
         "Alimentos": 0,
@@ -69,6 +71,7 @@ export function calculateAdditionalTax(totalPrice, category) {
     const additionalTaxRate = additionalTaxRates[category] || 0;
     return totalPrice * additionalTaxRate;
 }
+
 export function calculateAdditionalDiscount(totalPrice, category) {
     const additionalDiscountRates = {
         "Alimentos": 0.02,
@@ -84,11 +87,31 @@ export function calculateAdditionalDiscount(totalPrice, category) {
     return totalPrice * additionalDiscountRate;
 }
 
-export function calculateTotalPrice(totalPrice, stateCode, category) {
+export function calculateShippingCost(weight) {
+    if (weight <= 10) {
+        return 0;
+    } else if (weight <= 20) {
+        return 3.5;
+    } else if (weight <= 40) {
+        return 5;
+    } else if (weight <= 80) {
+        return 6;
+    } else if (weight <= 100) {
+        return 6.5;
+    } else if (weight <= 200) {
+        return 8;
+    } else {
+        return 9;
+    }
+}
+
+export function calculateTotalPrice(totalPrice, stateCode, category, weight, quantity) {
     const discount = calculateDiscount(totalPrice);
     const additionalDiscount = calculateAdditionalDiscount(totalPrice, category);
     const totalDiscount = discount + additionalDiscount;
-    const tax = calculateTax(totalPrice - totalDiscount, stateCode);
-    const additionalTax = calculateAdditionalTax(totalPrice - totalDiscount, category);
-    return parseFloat((totalPrice - totalDiscount + tax + additionalTax).toFixed(2)); 
+    const priceAfterDiscount = totalPrice - totalDiscount;
+    const tax = calculateTax(priceAfterDiscount, stateCode);
+    const additionalTax = calculateAdditionalTax(priceAfterDiscount, category);
+    const shippingCost = calculateShippingCost(weight) * quantity;
+    return parseFloat((priceAfterDiscount + tax + additionalTax + shippingCost).toFixed(2));
 }

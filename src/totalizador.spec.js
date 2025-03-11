@@ -1,4 +1,4 @@
-import { calculateNetPrice, calculateDiscount, calculateTax, calculateTotalPrice, calculateAdditionalTax, calculateAdditionalDiscount } from "./totalizador.js";
+import { calculateNetPrice, calculateDiscount, calculateTax, calculateTotalPrice, calculateAdditionalTax, calculateAdditionalDiscount, calculateShippingCost } from "./totalizador.js";
 
 describe("Calcular el precio neto", () => {
   it("Deberia retornar la cantidad por el precio", () => {
@@ -22,7 +22,6 @@ describe("Calcular el precio neto", () => {
   });
 });
 
-
 describe("Calcular el descuento", () => {
   it("Debería retornar el descuento correcto para un precio total de 1000", () => {
     expect(calculateDiscount(1000)).toBe(30); 
@@ -39,9 +38,8 @@ describe("Calcular el descuento", () => {
   it("Debería retornar 0 si el precio total es menor a 1000", () => {
     expect(calculateDiscount(500)).toBe(0);
   });
-
-
 });
+
 describe("Calcular el impuesto", () => {
   it("Debería retornar el impuesto correcto para el estado UT", () => {
     expect(calculateTax(1000, "UT")).toBe(66.5); 
@@ -63,7 +61,6 @@ describe("Calcular el impuesto", () => {
   });
 });
 
-
 describe("Calcular el impuesto adicional por categoría", () => {
   it("Debería retornar el impuesto adicional correcto para la categoría Alimentos", () => {
     expect(calculateAdditionalTax(1000, "Alimentos")).toBe(0);
@@ -75,7 +72,6 @@ describe("Calcular el impuesto adicional por categoría", () => {
     expect(calculateAdditionalTax(1000, "Material de escritorio")).toBe(0);
   });
 });
-
 
 describe("Calcular el descuento adicional por categoría", () => {
   it("Debería retornar el descuento adicional correcto para la categoría Alimentos", () => {
@@ -89,10 +85,26 @@ describe("Calcular el descuento adicional por categoría", () => {
   });
 });
 
+describe("Calcular el costo de envío", () => {
+  it("Debería retornar el costo de envío correcto para un peso volumétrico de 5", () => {
+    expect(calculateShippingCost(5)).toBe(0);
+  });
+  it("Debería retornar el costo de envío correcto para un peso volumétrico de 15", () => {
+    expect(calculateShippingCost(15)).toBe(3.5);
+  });
+  it("Debería retornar el costo de envío correcto para un peso volumétrico de 25", () => {
+    expect(calculateShippingCost(25)).toBe(5);
+  });
+});
 
-describe("Calcular el precio total final", () => {
-  it("Debería retornar el precio total final correcto", () => {
-    expect(calculateTotalPrice(1000, "UT")).toBeCloseTo(1034.51, 2);
-
+describe("Calcular el precio total final con costo de envío y descuentos adicionales", () => {
+  it("Debería retornar el precio total final correcto para un peso volumétrico de 5, categoría Alimentos y estado UT", () => {
+    expect(calculateTotalPrice(1000, "UT", "Alimentos", 5, 10)).toBeCloseTo(1013.17, 2);
+  });
+  it("Debería retornar el precio total final correcto para un peso volumétrico de 25, categoría Bebidas alcohólicas y estado CA", () => {
+    expect(calculateTotalPrice(1000, "CA", "Bebidas alcohólicas", 25, 10)).toBeCloseTo(1167.93, 2);
+  });
+  it("Debería retornar el precio total final correcto para un peso volumétrico de 50, categoría Electrónicos y estado TX", () => {
+    expect(calculateTotalPrice(1000, "TX", "Electrónicos", 50, 10)).toBeCloseTo(1118.4, 2);
   });
 });
