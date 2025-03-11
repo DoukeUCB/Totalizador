@@ -18,7 +18,29 @@
         <option value="NV">NV</option>
         <option value="TX">TX</option>
         <option value="AL">AL</option>
-        <option value="CA">CA</option>
+        <option value="CA" selected>CA</option>
+      </select>
+
+      <label for="label-category">Categoría del producto:</label>
+      <select id="label-category">
+        <option value="Varios">Varios</option>
+        <option value="Alimentos">Alimentos</option>
+        <option value="Bebidas alcohólicas">Bebidas alcohólicas</option>
+        <option value="Material de escritorio">Material de escritorio</option>
+        <option value="Muebles">Muebles</option>
+        <option value="Electrónicos">Electrónicos</option>
+        <option value="Vestimenta">Vestimenta</option>
+      </select>
+
+      <label for="label-weight">Peso volumétrico por unidad:</label>
+      <input type="number" id="label-weight" />
+
+      <label for="label-client-type">Tipo de cliente:</label>
+      <select id="label-client-type">
+        <option value="Normal">Normal</option>
+        <option value="Recurrente">Recurrente</option>
+        <option value="Antiguo Recurrente">Antiguo Recurrente</option>
+        <option value="Especial">Especial</option>
       </select>
 
       <input type="submit" value="Totalizar" id="calculate-button" />

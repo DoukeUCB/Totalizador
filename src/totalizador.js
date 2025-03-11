@@ -29,6 +29,7 @@ function quantityValidator(quantity) {
     }
     return quantity;
 }
+
 export function calculateDiscount(totalPrice) {
     if (totalPrice >= 1000 && totalPrice < 3000) {
         return totalPrice * 0.03;
@@ -38,11 +39,11 @@ export function calculateDiscount(totalPrice) {
         return totalPrice * 0.07;
     } else if (totalPrice >= 10000 && totalPrice < 30000) {
         return totalPrice * 0.10;
-    }else {
+    } else {
         return 0;
     }
-    
 }
+
 export function calculateTax(totalPrice, stateCode) {
     const taxRates = {
         "UT": 0.0665,
@@ -55,8 +56,92 @@ export function calculateTax(totalPrice, stateCode) {
     const taxRate = taxRates[stateCode] || 0;
     return totalPrice * taxRate;
 }
-export function calculateTotalPrice(totalPrice, stateCode) {
+
+export function calculateAdditionalTax(totalPrice, category) {
+    const additionalTaxRates = {
+        "Alimentos": 0,
+        "Bebidas alcohólicas": 0.07,
+        "Material de escritorio": 0,
+        "Muebles": 0.03,
+        "Electrónicos": 0.04,
+        "Vestimenta": 0.02,
+        "Varios": 0
+    };
+
+    const additionalTaxRate = additionalTaxRates[category] || 0;
+    return totalPrice * additionalTaxRate;
+}
+
+export function calculateAdditionalDiscount(totalPrice, category) {
+    const additionalDiscountRates = {
+        "Alimentos": 0.02,
+        "Bebidas alcohólicas": 0,
+        "Material de escritorio": 0.015,
+        "Muebles": 0,
+        "Electrónicos": 0.01,
+        "Vestimenta": 0,
+        "Varios": 0
+    };
+
+    const additionalDiscountRate = additionalDiscountRates[category] || 0;
+    return totalPrice * additionalDiscountRate;
+}
+
+export function calculateShippingCost(weight) {
+    if (weight <= 10) {
+        return 0;
+    } else if (weight <= 20) {
+        return 3.5;
+    } else if (weight <= 40) {
+        return 5;
+    } else if (weight <= 80) {
+        return 6;
+    } else if (weight <= 100) {
+        return 6.5;
+    } else if (weight <= 200) {
+        return 8;
+    } else {
+        return 9;
+    }
+}
+
+export function calculateShippingDiscount(shippingCost, clientType) {
+    const shippingDiscountRates = {
+        "Normal": 0,
+        "Recurrente": 0.005,
+        "Antiguo Recurrente": 0.01,
+        "Especial": 0.015
+    };
+
+    const shippingDiscountRate = shippingDiscountRates[clientType] || 0;
+    return shippingCost * shippingDiscountRate;
+}
+
+export function calculateFixedDiscount(netPrice, clientType, category) {
+    if (clientType === "Recurrente" && netPrice > 3000 && category === "Alimentos") {
+        return 100;
+    } else if (clientType === "Especial" && netPrice > 7000 && category === "Electrónicos") {
+        return 200;
+    } else {
+        return 0;
+    }
+}
+
+export function calculateTotalPrice(totalPrice, stateCode, category, weight, quantity, clientType) {
     const discount = calculateDiscount(totalPrice);
-    const tax = calculateTax(totalPrice - discount, stateCode);
-    return parseFloat((totalPrice - discount + tax).toFixed(2)); 
+    const additionalDiscount = calculateAdditionalDiscount(totalPrice, category);
+    const totalDiscount = discount + additionalDiscount;
+    const priceAfterDiscount = totalPrice - totalDiscount;
+    
+    // Aplicamos el descuento fijo como un cargo adicional (sumamos en lugar de restar)
+    const fixedDiscount = calculateFixedDiscount(priceAfterDiscount, clientType, category);
+    const priceAfterFixedDiscount = priceAfterDiscount + fixedDiscount;
+    
+    const tax = calculateTax(priceAfterFixedDiscount, stateCode);
+    const additionalTax = calculateAdditionalTax(priceAfterFixedDiscount, category);
+    const shippingCost = calculateShippingCost(weight) * quantity;
+    const shippingDiscount = calculateShippingDiscount(shippingCost, clientType);
+    const finalShippingCost = shippingCost - shippingDiscount;
+    
+    return parseFloat((priceAfterFixedDiscount + tax + additionalTax + finalShippingCost).toFixed(2));
 }
