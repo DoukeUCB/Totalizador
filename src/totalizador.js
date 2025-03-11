@@ -117,15 +117,31 @@ export function calculateShippingDiscount(shippingCost, clientType) {
     return shippingCost * shippingDiscountRate;
 }
 
+export function calculateFixedDiscount(netPrice, clientType, category) {
+    if (clientType === "Recurrente" && netPrice > 3000 && category === "Alimentos") {
+        return 100;
+    } else if (clientType === "Especial" && netPrice > 7000 && category === "Electrónicos") {
+        return 200;
+    } else {
+        return 0;
+    }
+}
+
 export function calculateTotalPrice(totalPrice, stateCode, category, weight, quantity, clientType) {
     const discount = calculateDiscount(totalPrice);
     const additionalDiscount = calculateAdditionalDiscount(totalPrice, category);
     const totalDiscount = discount + additionalDiscount;
     const priceAfterDiscount = totalPrice - totalDiscount;
-    const tax = calculateTax(priceAfterDiscount, stateCode);
-    const additionalTax = calculateAdditionalTax(priceAfterDiscount, category);
+    
+    // Aplicamos el descuento fijo como un cargo adicional (sumamos en lugar de restar)
+    const fixedDiscount = calculateFixedDiscount(priceAfterDiscount, clientType, category);
+    const priceAfterFixedDiscount = priceAfterDiscount + fixedDiscount;
+    
+    const tax = calculateTax(priceAfterFixedDiscount, stateCode);
+    const additionalTax = calculateAdditionalTax(priceAfterFixedDiscount, category);
     const shippingCost = calculateShippingCost(weight) * quantity;
     const shippingDiscount = calculateShippingDiscount(shippingCost, clientType);
     const finalShippingCost = shippingCost - shippingDiscount;
-    return parseFloat((priceAfterDiscount + tax + additionalTax + finalShippingCost).toFixed(2));
+    
+    return parseFloat((priceAfterFixedDiscount + tax + additionalTax + finalShippingCost).toFixed(2));
 }

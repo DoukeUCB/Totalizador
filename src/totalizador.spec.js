@@ -1,4 +1,4 @@
-import { calculateNetPrice, calculateDiscount, calculateTax, calculateTotalPrice, calculateAdditionalTax, calculateAdditionalDiscount, calculateShippingCost, calculateShippingDiscount } from "./totalizador.js";
+import { calculateNetPrice, calculateDiscount, calculateTax, calculateTotalPrice, calculateAdditionalTax, calculateAdditionalDiscount, calculateShippingCost, calculateShippingDiscount, calculateFixedDiscount } from "./totalizador.js";
 
 describe("Calcular el precio neto", () => {
   it("Deberia retornar la cantidad por el precio", () => {
@@ -124,5 +124,17 @@ describe("Calcular el descuento en el costo de envío por tipo de cliente", () =
 describe("Calcular el precio total final con costo de envío, descuentos adicionales y tipo de cliente", () => {
   it("Debería retornar el precio total final correcto para un peso volumétrico de 25, categoría Bebidas alcohólicas, estado CA y cliente Antiguo Recurrente", () => {
     expect(calculateTotalPrice(1000, "CA", "Bebidas alcohólicas", 25, 10, "Antiguo Recurrente")).toBeCloseTo(1167.43, 2);
+  });
+});
+
+describe("Calcular el descuento fijo por tipo de cliente, precio neto y categoría", () => {
+  it("Debería retornar el descuento fijo correcto para un cliente Recurrente con precio neto mayor a 3000 y categoría Alimentos", () => {
+    expect(calculateFixedDiscount(3500, "Recurrente", "Alimentos")).toBe(100);
+  });
+  it("Debería retornar el descuento fijo correcto para un cliente Especial con precio neto mayor a 7000 y categoría Electrónicos", () => {
+    expect(calculateFixedDiscount(7500, "Especial", "Electrónicos")).toBe(200);
+  });
+  it("Debería retornar 0 para un cliente Normal sin importar el precio neto y la categoría", () => {
+    expect(calculateFixedDiscount(10000, "Normal", "Electrónicos")).toBe(0);
   });
 });
