@@ -1,4 +1,4 @@
-import { calculateNetPrice, calculateDiscount,calculateTax,calculateTotalPrice} from "./totalizador.js";
+import { calculateNetPrice, calculateDiscount, calculateTax, calculateTotalPrice, calculateAdditionalTax } from "./totalizador.js";
 
 describe("Calcular el precio neto", () => {
   it("Deberia retornar la cantidad por el precio", () => {
@@ -58,6 +58,17 @@ describe("Calcular el impuesto", () => {
   });
   it("Debería retornar 0 si el estado no está en la lista", () => {
     expect(calculateTax(1000, "XX")).toBe(0);
+  });
+});
+describe("Calcular el impuesto adicional por categoría", () => {
+  it("Debería retornar el impuesto adicional correcto para la categoría Alimentos", () => {
+    expect(calculateAdditionalTax(1000, "Alimentos")).toBe(0);
+  });
+  it("Debería retornar el impuesto adicional correcto para la categoría Bebidas alcohólicas", () => {
+    expect(calculateAdditionalTax(1000, "Bebidas alcohólicas")).toBe(70);
+  });
+  it("Debería retornar el impuesto adicional correcto para la categoría Material de escritorio", () => {
+    expect(calculateAdditionalTax(1000, "Material de escritorio")).toBe(0);
   });
 });
 describe("Calcular el precio total final", () => {

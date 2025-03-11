@@ -55,8 +55,23 @@ export function calculateTax(totalPrice, stateCode) {
     const taxRate = taxRates[stateCode] || 0;
     return totalPrice * taxRate;
 }
-export function calculateTotalPrice(totalPrice, stateCode) {
+export function calculateAdditionalTax(totalPrice, category) {
+    const additionalTaxRates = {
+        "Alimentos": 0,
+        "Bebidas alcohólicas": 0.07,
+        "Material de escritorio": 0,
+        "Muebles": 0.03,
+        "Electrónicos": 0.04,
+        "Vestimenta": 0.02,
+        "Varios": 0
+    };
+
+    const additionalTaxRate = additionalTaxRates[category] || 0;
+    return totalPrice * additionalTaxRate;
+}
+export function calculateTotalPrice(totalPrice, stateCode, category) {
     const discount = calculateDiscount(totalPrice);
     const tax = calculateTax(totalPrice - discount, stateCode);
-    return parseFloat((totalPrice - discount + tax).toFixed(2)); 
+    const additionalTax = calculateAdditionalTax(totalPrice - discount, category);
+    return parseFloat((totalPrice - discount + tax + additionalTax).toFixed(2)); 
 }
