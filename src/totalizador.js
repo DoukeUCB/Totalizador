@@ -69,9 +69,26 @@ export function calculateAdditionalTax(totalPrice, category) {
     const additionalTaxRate = additionalTaxRates[category] || 0;
     return totalPrice * additionalTaxRate;
 }
+export function calculateAdditionalDiscount(totalPrice, category) {
+    const additionalDiscountRates = {
+        "Alimentos": 0.02,
+        "Bebidas alcohólicas": 0,
+        "Material de escritorio": 0.015,
+        "Muebles": 0,
+        "Electrónicos": 0.01,
+        "Vestimenta": 0,
+        "Varios": 0
+    };
+
+    const additionalDiscountRate = additionalDiscountRates[category] || 0;
+    return totalPrice * additionalDiscountRate;
+}
+
 export function calculateTotalPrice(totalPrice, stateCode, category) {
     const discount = calculateDiscount(totalPrice);
-    const tax = calculateTax(totalPrice - discount, stateCode);
-    const additionalTax = calculateAdditionalTax(totalPrice - discount, category);
-    return parseFloat((totalPrice - discount + tax + additionalTax).toFixed(2)); 
+    const additionalDiscount = calculateAdditionalDiscount(totalPrice, category);
+    const totalDiscount = discount + additionalDiscount;
+    const tax = calculateTax(totalPrice - totalDiscount, stateCode);
+    const additionalTax = calculateAdditionalTax(totalPrice - totalDiscount, category);
+    return parseFloat((totalPrice - totalDiscount + tax + additionalTax).toFixed(2)); 
 }

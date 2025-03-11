@@ -1,10 +1,9 @@
-import { calculateNetPrice, calculateDiscount, calculateTax, calculateTotalPrice, calculateAdditionalTax } from "./totalizador.js";
+import { calculateNetPrice, calculateDiscount, calculateTax, calculateTotalPrice, calculateAdditionalTax, calculateAdditionalDiscount } from "./totalizador.js";
 
 describe("Calcular el precio neto", () => {
   it("Deberia retornar la cantidad por el precio", () => {
     expect(calculateNetPrice(3, 2)).toBe(6);
   });
-
   it("Deberia retornar el error", () => {
     expect(() => calculateNetPrice(-3, 5)).toThrow(Error);
     expect(() => calculateNetPrice(3, NaN)).toThrow(Error);
@@ -22,6 +21,8 @@ describe("Calcular el precio neto", () => {
     expect(() => calculateNetPrice(3, null)).toThrow("El precio no puede estar vacío.");
   });
 });
+
+
 describe("Calcular el descuento", () => {
   it("Debería retornar el descuento correcto para un precio total de 1000", () => {
     expect(calculateDiscount(1000)).toBe(30); 
@@ -39,13 +40,14 @@ describe("Calcular el descuento", () => {
     expect(calculateDiscount(500)).toBe(0);
   });
 
+
 });
 describe("Calcular el impuesto", () => {
   it("Debería retornar el impuesto correcto para el estado UT", () => {
     expect(calculateTax(1000, "UT")).toBe(66.5); 
   });
   it("Debería retornar el impuesto correcto para el estado NV", () => {
-    expect(calculateTax(1000, "NV")).toBe(80);
+    expect(calculateTax(1000, "NV")). toBe(80);
   });
   it("Debería retornar el impuesto correcto para el estado TX", () => {
     expect(calculateTax(1000, "TX")).toBe(62.5);
@@ -60,6 +62,8 @@ describe("Calcular el impuesto", () => {
     expect(calculateTax(1000, "XX")).toBe(0);
   });
 });
+
+
 describe("Calcular el impuesto adicional por categoría", () => {
   it("Debería retornar el impuesto adicional correcto para la categoría Alimentos", () => {
     expect(calculateAdditionalTax(1000, "Alimentos")).toBe(0);
@@ -71,6 +75,21 @@ describe("Calcular el impuesto adicional por categoría", () => {
     expect(calculateAdditionalTax(1000, "Material de escritorio")).toBe(0);
   });
 });
+
+
+describe("Calcular el descuento adicional por categoría", () => {
+  it("Debería retornar el descuento adicional correcto para la categoría Alimentos", () => {
+    expect(calculateAdditionalDiscount(1000, "Alimentos")).toBe(20);
+  });
+  it("Debería retornar el descuento adicional correcto para la categoría Material de escritorio", () => {
+    expect(calculateAdditionalDiscount(1000, "Material de escritorio")).toBe(15);
+  });
+  it("Debería retornar el descuento adicional correcto para la categoría Electrónicos", () => {
+    expect(calculateAdditionalDiscount(1000, "Electrónicos")).toBe(10);
+  });
+});
+
+
 describe("Calcular el precio total final", () => {
   it("Debería retornar el precio total final correcto", () => {
     expect(calculateTotalPrice(1000, "UT")).toBeCloseTo(1034.51, 2);
