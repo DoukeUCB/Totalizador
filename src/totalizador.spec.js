@@ -1,4 +1,4 @@
-import { calculateNetPrice, calculateDiscount, calculateTax, calculateTotalPrice, calculateAdditionalTax, calculateAdditionalDiscount, calculateShippingCost } from "./totalizador.js";
+import { calculateNetPrice, calculateDiscount, calculateTax, calculateTotalPrice, calculateAdditionalTax, calculateAdditionalDiscount, calculateShippingCost, calculateShippingDiscount } from "./totalizador.js";
 
 describe("Calcular el precio neto", () => {
   it("Deberia retornar la cantidad por el precio", () => {
@@ -106,5 +106,23 @@ describe("Calcular el precio total final con costo de envío y descuentos adicio
   });
   it("Debería retornar el precio total final correcto para un peso volumétrico de 50, categoría Electrónicos y estado TX", () => {
     expect(calculateTotalPrice(1000, "TX", "Electrónicos", 50, 10)).toBeCloseTo(1118.4, 2);
+  });
+});
+
+describe("Calcular el descuento en el costo de envío por tipo de cliente", () => {
+  it("Debería retornar el descuento correcto para un cliente Recurrente", () => {
+    expect(calculateShippingDiscount(100, "Recurrente")).toBe(0.5);
+  });
+  it("Debería retornar el descuento correcto para un cliente Antiguo Recurrente", () => {
+    expect(calculateShippingDiscount(100, "Antiguo Recurrente")).toBe(1);
+  });
+  it("Debería retornar el descuento correcto para un cliente Especial", () => {
+    expect(calculateShippingDiscount(100, "Especial")).toBe(1.5);
+  });
+});
+
+describe("Calcular el precio total final con costo de envío, descuentos adicionales y tipo de cliente", () => {
+  it("Debería retornar el precio total final correcto para un peso volumétrico de 25, categoría Bebidas alcohólicas, estado CA y cliente Antiguo Recurrente", () => {
+    expect(calculateTotalPrice(1000, "CA", "Bebidas alcohólicas", 25, 10, "Antiguo Recurrente")).toBeCloseTo(1167.43, 2);
   });
 });

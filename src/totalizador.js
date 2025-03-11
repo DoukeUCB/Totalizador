@@ -105,7 +105,19 @@ export function calculateShippingCost(weight) {
     }
 }
 
-export function calculateTotalPrice(totalPrice, stateCode, category, weight, quantity) {
+export function calculateShippingDiscount(shippingCost, clientType) {
+    const shippingDiscountRates = {
+        "Normal": 0,
+        "Recurrente": 0.005,
+        "Antiguo Recurrente": 0.01,
+        "Especial": 0.015
+    };
+
+    const shippingDiscountRate = shippingDiscountRates[clientType] || 0;
+    return shippingCost * shippingDiscountRate;
+}
+
+export function calculateTotalPrice(totalPrice, stateCode, category, weight, quantity, clientType) {
     const discount = calculateDiscount(totalPrice);
     const additionalDiscount = calculateAdditionalDiscount(totalPrice, category);
     const totalDiscount = discount + additionalDiscount;
@@ -113,5 +125,7 @@ export function calculateTotalPrice(totalPrice, stateCode, category, weight, qua
     const tax = calculateTax(priceAfterDiscount, stateCode);
     const additionalTax = calculateAdditionalTax(priceAfterDiscount, category);
     const shippingCost = calculateShippingCost(weight) * quantity;
-    return parseFloat((priceAfterDiscount + tax + additionalTax + shippingCost).toFixed(2));
+    const shippingDiscount = calculateShippingDiscount(shippingCost, clientType);
+    const finalShippingCost = shippingCost - shippingDiscount;
+    return parseFloat((priceAfterDiscount + tax + additionalTax + finalShippingCost).toFixed(2));
 }
